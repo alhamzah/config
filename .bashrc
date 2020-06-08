@@ -8,7 +8,8 @@ export TERM=xterm-256color
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-export GREP_OPTIONS="--color=always"
+GREP_OPTIONS="--color=always"
+alias grep="grep $GREP_OPTIONS"
 
 export LESS='--ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
 
