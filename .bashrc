@@ -41,4 +41,21 @@ function color_my_prompt {
 }
 color_my_prompt
 
-alias ls="ls -G"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias ls='ls -color=auto'
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+        # Mac OSX
+    alias ls='ls -G'
+fi
+
+alias ll='ls -la'
+alias l.='ls -d .*'
+
+# colored man
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
