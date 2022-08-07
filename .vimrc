@@ -4,34 +4,59 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
- set rtp+=~/.vim/bundle/Vundle.vim
- call vundle#begin()
- " alternatively, pass a path where Vundle should install plugins
- "call vundle#begin('~/some/path/here')
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
- " let Vundle manage Vundle, required
- Plugin 'VundleVim/Vundle.vim'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
- " The following are examples of different formats supported.
- " Keep Plugin commands between vundle#begin/end.
- " plugin on GitHub repo
- Plugin 'tpope/vim-fugitive'
- Plugin 'davidhalter/jedi-vim'
- Plugin 'vim-python/python-syntax'
- Plugin 'ervandew/supertab'
- Plugin 'tmhedberg/SimpylFold'
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
 
- " All of your Plugins must be added before the following line
- call vundle#end()            " required
- filetype plugin indent on    " required
+Plugin 'davidhalter/jedi-vim'
+let g:jedi#completions_command = "<Tab>"
 
-""""""""""""""""""""""""""""
-
+Plugin 'vim-python/python-syntax'
 syntax enable
 colorscheme molokai
 let g:molokai_original = 1
-
 let g:rehash256 = 1
+let g:python_highlight_all = 1
+
+Plugin 'ervandew/supertab'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'vim-airline/vim-airline'
+
+Plugin 'mhinz/vim-signify'
+" default updatetime 4000ms is not good for async update
+set updatetime=100
+
+autocmd User SignifyHunk call s:show_current_hunk()
+
+function! s:show_current_hunk() abort
+  let h = sy#util#get_hunk_stats()
+  if !empty(h)
+    echo printf('[Hunk %d/%d]', h.current_hunk, h.total_hunks)
+  endif
+endfunction
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+""""""""""""""""""""""""""""
+
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_browse_split = 1
+let g:netrw_winsize = 25
+autocmd FileType netrw setl bufhidden=delete
 
 " jump to the last position when reopening a file
 if has("autocmd")
@@ -40,10 +65,7 @@ endif
 
 set timeoutlen=1000 ttimeoutlen=0
 
-let g:netrw_liststyle = 3
-let g:netrw_banner = 0
-let g:netrw_browse_split = 1
-let g:netrw_winsize = 25
+set path+=/shared/home/alhamzah/code/python/**
 
 set backspace=2
 set number
@@ -70,14 +92,18 @@ set wildmode=longest:full,full
 set encoding=utf-8  " The displayed encoding
 set fileencoding=utf-8  " The encoding written to file.
 
-let g:python_highlight_all = 1
-
 set clipboard=unnamed
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
-noremap <space> :
+" Folding
+nnoremap <space> za
+vnoremap <space> zf
+
+" Fuzzy find with fzf
+nnoremap <C-p> :GFiles<Cr>
+nnoremap <C-g> :Ag<Cr>
 
 vnoremap <silent> # :s/^/#/<cr>:noh<cr>
 vnoremap <silent> -# :s/^#//<cr>:noh<cr>
