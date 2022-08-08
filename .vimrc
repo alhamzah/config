@@ -15,36 +15,46 @@ Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-surround'
+Plugin 'tmhedberg/SimpylFold'
 Plugin 'tpope/vim-fugitive'
 
 Plugin 'davidhalter/jedi-vim'
-let g:jedi#completions_command = "<Tab>"
+let g:jedi#completions_command = "<S-Tab>"
 
 Plugin 'vim-python/python-syntax'
 syntax enable
+syntax on
+let g:rehash256 = 1
 colorscheme molokai
 let g:molokai_original = 1
-let g:rehash256 = 1
 let g:python_highlight_all = 1
-
-Plugin 'ervandew/supertab'
-Plugin 'tmhedberg/SimpylFold'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+" ripgrep not included in image
+function! GrepFzf(query, fullscreen, grepcase)
+  let command_fmt = 'grep --color=always -nr' . a:grepcase . ' %s --exclude=\*.{pyc,csv,log\*} --exclude-dir=\.\* || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang Grep call GrepFzf(<q-args>, <bang>0, '')
+command! -nargs=* -bang Grepi call GrepFzf(<q-args>, <bang>0, 'i')
+set grepprg=grep\ -r\ --exclude=\*.{pyc,csv,log\*}\ --exclude-dir=\.\*
+
 Plugin 'vim-airline/vim-airline'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#enabled = 1
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline_theme='cool'
 
 Plugin 'mhinz/vim-signify'
 " default updatetime 4000ms is not good for async update
 set updatetime=100
-
-autocmd User SignifyHunk call s:show_current_hunk()
-
-function! s:show_current_hunk() abort
-  let h = sy#util#get_hunk_stats()
-  if !empty(h)
-    echo printf('[Hunk %d/%d]', h.current_hunk, h.total_hunks)
-  endif
-endfunction
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -70,8 +80,13 @@ set path+=/shared/home/alhamzah/code/python/**
 set backspace=2
 set number
 set nocompatible
+
+" Search
 set hlsearch
 set incsearch
+set ignorecase
+set smartcase
+
 set autoindent
 set ruler
 set ls=2
@@ -103,7 +118,8 @@ vnoremap <space> zf
 
 " Fuzzy find with fzf
 nnoremap <C-p> :GFiles<Cr>
-nnoremap <C-g> :Ag<Cr>
+nnoremap <C-f> :Files<Cr>
+nnoremap <C-g> :Grepi<Cr>
 
 vnoremap <silent> # :s/^/#/<cr>:noh<cr>
 vnoremap <silent> -# :s/^#//<cr>:noh<cr>
