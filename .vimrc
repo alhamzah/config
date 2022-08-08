@@ -21,8 +21,10 @@ Plugin 'tpope/vim-surround'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'tpope/vim-fugitive'
 
-Plugin 'davidhalter/jedi-vim'
-let g:jedi#completions_command = "<S-Tab>"
+Plugin 'ycm-core/YouCompleteMe'
+nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>gd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 Plugin 'vim-python/python-syntax'
 syntax enable
@@ -49,8 +51,12 @@ set grepprg=grep\ -r\ --exclude=\*.{pyc,csv,log\*}\ --exclude-dir=\.\*
 Plugin 'vim-airline/vim-airline'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled=0
 Plugin 'vim-airline/vim-airline-themes'
 let g:airline_theme='cool'
+
+Plugin 'dense-analysis/ale'
+let g:airline#extensions#ale#enabled = 1
 
 Plugin 'mhinz/vim-signify'
 " default updatetime 4000ms is not good for async update
@@ -80,6 +86,8 @@ set path+=/shared/home/alhamzah/code/python/**
 set backspace=2
 set number
 set nocompatible
+
+:set history=10000
 
 " Search
 set hlsearch
@@ -125,3 +133,9 @@ vnoremap <silent> # :s/^/#/<cr>:noh<cr>
 vnoremap <silent> -# :s/^#//<cr>:noh<cr>
 
 set directory^=$HOME/.vim/tmp//
+
+"""""""""""""""""""""
+" Work shortcuts
+""""""""""""""""""""
+
+command! Cdint :cd $HOME/code/python/reainternal
