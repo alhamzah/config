@@ -33,6 +33,7 @@ let g:rehash256 = 1
 colorscheme molokai
 let g:molokai_original = 1
 let g:python_highlight_all = 1
+highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
@@ -123,7 +124,20 @@ set clipboard=unnamed
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
-"
+" Less chords
+map ; :
+noremap ;; ;
+
+" Emacs mapping in command mode
+cnoremap <C-A> <Home>
+cnoremap <C-B> <Left>
+cnoremap <C-D> <Del>
+cnoremap <C-E> <End>
+cnoremap <C-F> <Right>
+cnoremap <C-N> <Down>
+cnoremap <C-P> <Up>
+cnoremap <Esc><C-B> <S-Left>
+cnoremap <Esc><C-F> <S-Right>
 
 " Folding
 nnoremap <space> za
