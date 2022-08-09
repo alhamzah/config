@@ -33,6 +33,7 @@ let g:rehash256 = 1
 colorscheme molokai
 let g:molokai_original = 1
 let g:python_highlight_all = 1
+
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 " ripgrep not included in image
@@ -87,7 +88,7 @@ set backspace=2
 set number
 set nocompatible
 
-:set history=10000
+set history=10000
 
 " Search
 set hlsearch
@@ -99,15 +100,17 @@ set autoindent
 set ruler
 set ls=2
 set confirm
-set mouse=a
 set cmdheight=2
+set mouse=a
+set ttymouse=xterm2
 
 set expandtab           " enter spaces when tab is pressed
-set textwidth=0       " break lines when line length increases
+set textwidth=0         " break lines when line length increases
 set tabstop=4           " use 4 spaces to represent tab
 set softtabstop=4
 set shiftwidth=4        " number of spaces to use for auto indent
 set scrolloff=5
+set formatoptions-=c formatoptions-=r formatoptions-=o  " dont insert current comment leader
 
 set wildmenu
 set wildmode=longest:full,full
@@ -120,6 +123,8 @@ set clipboard=unnamed
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
+"
+
 " Folding
 nnoremap <space> za
 vnoremap <space> zf
@@ -129,10 +134,47 @@ nnoremap <C-p> :GFiles<Cr>
 nnoremap <C-f> :Files<Cr>
 nnoremap <C-g> :Grepi<Cr>
 
+" Keep search matches in the middle and pulse the line
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
 vnoremap <silent> # :s/^/#/<cr>:noh<cr>
 vnoremap <silent> -# :s/^#//<cr>:noh<cr>
 
+cnoremap <expr> <c-n> wildmenumode() ? "\<c-n>" : "\<down>"
+cnoremap <expr> <c-p> wildmenumode() ? "\<c-p>" : "\<up>"
+
+" Refresh page if gui is messed up
+nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
+
+" No beeping
+set noerrorbells
+set novisualbell
+set t_vb=
+
+" Different cursors for different modes
+if empty($TMUX)
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+else
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+endif
+
+" Keep visual block selection after shifting
+xnoremap <  <gv
+xnoremap >  >gv
+
+" Move backups to
 set directory^=$HOME/.vim/tmp//
+
+" Source .vimrc on write
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
+" Abbreviations
+iab ipdb import ipdb; ipdb.set_trace()<esc>
 
 """""""""""""""""""""
 " Work shortcuts
