@@ -18,8 +18,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-surround'
-Plugin 'tmhedberg/SimpylFold'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'tmhedberg/SimpylFold'  # TODO find folding alaternative
 
 Plugin 'ycm-core/YouCompleteMe'
 nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
@@ -145,8 +145,9 @@ vnoremap <space> zf
 
 " Fuzzy find with fzf
 nnoremap <C-p> :GFiles<Cr>
-nnoremap <C-f> :Files<Cr>
 nnoremap <C-g> :Grepi<Cr>
+nnoremap <C-f> :Files<Cr>
+nnoremap <C-t> :Files $HOME/code<Cr>
 
 " Keep search matches in the middle and pulse the line
 nnoremap n nzzzv
@@ -184,14 +185,21 @@ xnoremap >  >gv
 " Move backups to
 set directory^=$HOME/.vim/tmp//
 
+" Delete swp files
+command! Cleanup :!find $HOME/.vim/tmp// -type f -name "*.sw[klmnop]" -delete
+
 " Source .vimrc on write
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
+" Debugging
+autocmd FileType python nnoremap <leader>db oimport ipdb; ipdb.set_trace()<Esc>:w<Cr>
+
 " Abbreviations
-iab ipdb import ipdb; ipdb.set_trace()<esc>
+""" iab ipdb import ipdb; ipdb.set_trace()<esc>
 
 """""""""""""""""""""
 " Work shortcuts
-""""""""""""""""""""
+"""""""""""""""""""""
 
 command! Cdint :cd $HOME/code/python/reainternal
+command! Cdpy :cd $HOME/code/python/
