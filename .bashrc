@@ -16,9 +16,10 @@ export LESS='--ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --H
 # http://www.biostat.jhsph.edu/~afisher/ComputingClub/webfiles/KasperHansenPres/IntermediateUnix.pdf
 # https://unix.stackexchange.com/questions/48713/how-can-i-remove-duplicates-in-my-bash-history-preserving-order
 export HISTCONTROL=ignoreboth:erasedups
-export HISTSIZE=10000
+export HISTSIZE=1000000
 shopt -s histappend
 shopt -s cmdhist
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # Auto-complete command from history
 # http://lindesk.com/2009/04/customize-terminal-configuration-setting-bash-cli-power-user/
