@@ -9,3 +9,9 @@ rm -r ~/myconf-tmp/
 mkdir -p ~/.vim/bundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
+
+# Compile YouCompleteMe
+sudo apt install build-essential cmake python3-dev
+cd ~/.vim/bundle/YouCompleteMe
+python3 install.py
+cd
