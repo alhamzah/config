@@ -15,10 +15,11 @@ Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-surround'
+" Plugin 'christoomey/vim-tmux-navigator'
+" Plugin 'tpope/vim-unimpaired'
+" Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
 " Plugin 'tmhedberg/SimpylFold'  # TODO find folding alaternative
 
 Plugin 'ycm-core/YouCompleteMe'
@@ -38,16 +39,16 @@ highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE gui
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 " ripgrep not included in image
-function! GrepFzf(query, fullscreen, grepcase)
-  let command_fmt = 'grep --color=always -nr' . a:grepcase . ' %s --exclude=\*.{pyc,csv,log\*} --exclude-dir=\.\* || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
+" function! GrepFzf(query, fullscreen, grepcase)
+"   let command_fmt = 'grep --color=always -nr' . a:grepcase . ' %s --exclude=\*.{pyc,csv,log\*} --exclude-dir=\.\* || true'
+"   let initial_command = printf(command_fmt, shellescape(a:query))
+"   let reload_command = printf(command_fmt, '{q}')
+"   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+" endfunction
 
-command! -nargs=* -bang Grep call GrepFzf(<q-args>, <bang>0, '')
-command! -nargs=* -bang Grepi call GrepFzf(<q-args>, <bang>0, 'i')
+" command! -nargs=* -bang Grep call GrepFzf(<q-args>, <bang>0, '')
+" command! -nargs=* -bang Grepi call GrepFzf(<q-args>, <bang>0, 'i')
 set grepprg=grep\ -r\ --exclude=\*.{pyc,csv,log\*}\ --exclude-dir=\.\*
 
 Plugin 'vim-airline/vim-airline'
@@ -60,7 +61,7 @@ let g:airline_theme='cool'
 Plugin 'dense-analysis/ale'
 let g:airline#extensions#ale#enabled = 1
 
-Plugin 'mhinz/vim-signify'
+" Plugin 'mhinz/vim-signify'
 " default updatetime 4000ms is not good for async update
 set updatetime=100
 
@@ -145,9 +146,9 @@ vnoremap <space> zf
 
 " Fuzzy find with fzf
 nnoremap <C-p> :GFiles<Cr>
-nnoremap <C-g> :Grepi<Cr>
+nnoremap <C-g> :Rg<Cr>
 nnoremap <C-f> :Files<Cr>
-nnoremap <C-t> :Files $HOME/code<Cr>
+nnoremap <C-t> :Cdpy<Esc>:Rg<Cr>
 
 " Keep search matches in the middle and pulse the line
 nnoremap n nzzzv
@@ -201,5 +202,6 @@ autocmd FileType python nnoremap <leader>db oimport ipdb; ipdb.set_trace()<Esc>:
 " Work shortcuts
 """""""""""""""""""""
 
+" command! ProjectFiles call fzf#vim#rg('~/code', <bang>0)
 command! Cdint :cd $HOME/code/python/reainternal
 command! Cdpy :cd $HOME/code/python/
